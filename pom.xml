@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>dk.mmj</groupId>
+    <artifactId>eevhe-gui</artifactId>
+    <version>1.0.0</version>
+    <description>Graphics User Interface for the 'Extended Electronic Voting using Homomorphic Encryption</description>
+    <name>${project.groupId}:${project.artifactId}</name>
+    <url>https://github.com/Ernstsen/EEVHE-GUI</url>
+
+
+    <properties>
+        <java.version>1.8</java.version>
+        <start-class>dk.mmj.eevhe.gui.Main</start-class>
+    </properties>
+
+    <developers>
+        <developer>
+            <name>Johannes Ernstsen</name>
+            <email>ernstsen.johannes@gmail.com</email>
+            <!-- Your organization, or Github is fine too -->
+            <organization>Aarhus University</organization>
+            <!-- URL for Organization, URL to your github profile work well here -->
+            <organizationUrl>https://github.com/Ernstsen</organizationUrl>
+        </developer>
+        <developer>
+            <name>Morten Erfurt Hansen</name>
+            <email>morten230490@hotmail.com</email>
+            <!-- Your organization, or Github is fine too -->
+            <organization>Aarhus University</organization>
+            <!-- URL for Organization, URL to your github profile work well here -->
+            <organizationUrl>https://github.com/MortenErfurt</organizationUrl>
+        </developer>
+        <developer>
+            <name>Mathias Søby Jensen</name>
+            <email>m.soeby.j@gmail.com</email>
+            <!-- Your organization, or Github is fine too -->
+            <organization>Aarhus University</organization>
+            <!-- URL for Organization, URL to your github profile work well here -->
+            <organizationUrl>https://github.com/m-atlantis</organizationUrl>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <dependencies>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>dk.mmj.eevhe.gui.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
