@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -20,6 +21,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class ConfigurerManager implements Manager {
 
@@ -43,6 +45,16 @@ public class ConfigurerManager implements Manager {
     public TableColumn<Integer, Integer> id;
     @FXML
     public TableColumn<Integer, String> address;
+    @FXML
+    public TextField days;
+    @FXML
+    public TextField hours;
+    @FXML
+    public TextField minutes;
+    @FXML
+    public Label outputFolderLabel;
+    @FXML
+    public Button chooseOutputFolder;
 
     private Stage parentStage;
     private ConfigurationBuilder configurationBuilder;
@@ -50,22 +62,31 @@ public class ConfigurerManager implements Manager {
     @FXML
     public void initialize() {
         configurationBuilder = new ConfigurationBuilder();
-        final FileChooser certChooser = getChooser("Choose certificate file");
         chooseCertFile.setOnAction(event -> {
-            final File certFile = certChooser.showOpenDialog(parentStage);
+            final File certFile = getChooser("Choose certificate file").showOpenDialog(parentStage);
             if (certFile != null) {
                 configurationBuilder.setCertFilePath(certFile.getPath());
                 certFileLabel.setText(certFile.getName());
             }
         });
 
-        final FileChooser certKeyChooser = getChooser("Choose certificate private-key file");
         chooseCertKeyFile.setOnAction(event -> {
-            final File certKeyFile = certKeyChooser.showOpenDialog(parentStage);
+            final File certKeyFile = getChooser("Choose certificate private-key file").showOpenDialog(parentStage);
             if (certKeyFile != null) {
-                configurationBuilder.setCertFilePath(certKeyFile.getPath());
+                configurationBuilder.setCertKeyFilePath(certKeyFile.getPath());
                 certKeyFileLabel.setText(certKeyFile.getName());
             }
+        });
+
+        chooseOutputFolder.setOnAction(event -> {
+            final DirectoryChooser outputChooser = new DirectoryChooser();
+            outputChooser.setTitle("Choose output destination");
+            final File folder = outputChooser.showDialog(parentStage);
+            if (folder != null) {
+                configurationBuilder.setOutputFolder(folder.getPath());
+                outputFolderLabel.setText(folder.getName());
+            }
+
         });
 
         addDA.setOnAction(event -> {
@@ -115,8 +136,14 @@ public class ConfigurerManager implements Manager {
 
     private void doBuild(ActionEvent event) {
         try {
+            configurationBuilder.setDaAddresses(daAddresses.stream().collect(Collectors.toMap(DAInfo::getId, DAInfo::getAddress)));
+            configurationBuilder.setElectionDuration(new ConfigurationBuilder.Duration(
+                    Integer.parseInt(days.getText()),
+                    Integer.parseInt(hours.getText()),
+                    Integer.parseInt(minutes.getText())
+            ));
             configurationBuilder.build();
-        } catch (BuildFailedException e) {
+        } catch (BuildFailedException | NumberFormatException e) {
             final Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Configuration Error");
             alert.setHeaderText("Failed to produce configuration output");

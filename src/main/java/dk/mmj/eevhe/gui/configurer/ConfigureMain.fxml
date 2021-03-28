@@ -3,97 +3,170 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-<GridPane prefHeight="150.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/11.0.1"
-          xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.mmj.eevhe.gui.configurer.ConfigurerManager">
+<?import javafx.scene.text.*?>
+
+<GridPane prefHeight="10.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.mmj.eevhe.gui.configurer.ConfigurerManager">
 
 
-    <Text text="Configuration" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="3"
-          GridPane.halignment="CENTER" GridPane.rowIndex="1">
+    <Text text="Configuration" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1">
         <font>
-            <Font name="System Bold" size="22.0"/>
+            <Font name="System Bold" size="22.0" />
         </font>
     </Text>
 
     <Label text="Election Certificate" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
         <font>
-            <Font name="System Bold" size="14.0"/>
+            <Font name="System Bold" size="14.0" />
         </font>
     </Label>
     <VBox style="-fx-border-color: grey;" GridPane.columnIndex="1" GridPane.rowIndex="3">
         <padding>
-            <Insets bottom="10.0" left="5.0" right="5.0" top="10.0"/>
+            <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
         </padding>
         <GridPane.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
         </GridPane.margin>
-        <Label text="Certificate" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <Label text="Certificate" GridPane.columnIndex="0" GridPane.rowIndex="0" />
         <HBox>
             <Label fx:id="certFileLabel" prefWidth="80" text="No file chosen" GridPane.halignment="LEFT">
                 <GridPane.margin>
-                    <Insets right="20.0"/>
+                    <Insets right="20.0" />
                 </GridPane.margin>
             </Label>
-            <Button fx:id="chooseCertFile" text="Choose file"/>
+            <Button fx:id="chooseCertFile" text="Choose file" />
         </HBox>
         <Separator>
             <padding>
-                <Insets bottom="5.0" top="5.0"/>
+                <Insets bottom="5.0" top="5.0" />
             </padding>
         </Separator>
-        <Label text="Certificate Key" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <Label text="Certificate Key" GridPane.columnIndex="0" GridPane.rowIndex="0" />
         <HBox>
-            <Label fx:id="certKeyFileLabel" prefWidth="80" text="No file chosen" GridPane.halignment="LEFT"/>
-            <Button fx:id="chooseCertKeyFile" text="Choose file"/>
+            <Label fx:id="certKeyFileLabel" prefWidth="80" text="No file chosen" GridPane.halignment="LEFT" />
+            <Button fx:id="chooseCertKeyFile" text="Choose file" />
         </HBox>
     </VBox>
 
-    <Label text="Decryption Authorities" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER"
-           GridPane.rowIndex="2">
+    <Label text="Election Duration" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4">
         <font>
-            <Font name="System Bold" size="14.0"/>
+            <Font name="System Bold" size="14.0" />
         </font>
     </Label>
-    <VBox GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3">
+    <VBox style="-fx-border-color: grey;" GridPane.columnIndex="1" GridPane.rowIndex="5">
+        <padding>
+            <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+        </padding>
         <GridPane.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
         </GridPane.margin>
-
-        <TableView fx:id="daTable" prefWidth="150" GridPane.columnIndex="0" GridPane.halignment="CENTER"
-                   GridPane.rowIndex="0">
-            <columns>
-                <TableColumn fx:id="id" prefWidth="30" text="Id"/>
-                <TableColumn fx:id="address" prefWidth="160" text="Address"/>
-            </columns>
-        </TableView>
-        <Button fx:id="addDA" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="193.0"
-                text="Add Authority" GridPane.halignment="CENTER" GridPane.rowIndex="0"/>
+        <HBox>
+            <Label text="Days:" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <HBox.margin>
+                    <Insets bottom="5.0" left="2.0" right="3.0" top="5.0" />
+                </HBox.margin>
+            </Label>
+            <TextField fx:id="days" prefWidth="50" text="0" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+                <HBox.margin>
+                    <Insets bottom="5.0" left="3.0" right="5.0" top="5.0" />
+                </HBox.margin>
+            </TextField>
+        </HBox>
+        <HBox>
+            <Label text="Hours:" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                <HBox.margin>
+                    <Insets bottom="5.0" left="2.0" right="3.0" top="5.0" />
+                </HBox.margin>
+            </Label>
+            <TextField fx:id="hours" prefWidth="50" text="0" GridPane.columnIndex="3">
+                <HBox.margin>
+                    <Insets bottom="5.0" left="3.0" right="5.0" top="5.0" />
+                </HBox.margin>
+            </TextField>
+        </HBox>
+        <HBox>
+            <Label text="Minutes:" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <HBox.margin>
+                    <Insets bottom="5.0" left="2.0" right="3.0" top="5.0" />
+                </HBox.margin>
+            </Label>
+            <TextField fx:id="minutes" prefWidth="50" text="0" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+                <HBox.margin>
+                    <Insets bottom="5.0" left="3.0" right="5.0" top="5.0" />
+                </HBox.margin>
+            </TextField>
+        </HBox>
     </VBox>
 
-    <Button fx:id="doBuild" defaultButton="true" GridPane.columnIndex="3" GridPane.halignment="CENTER"
-            GridPane.rowIndex="6" GridPane.valignment="CENTER">
+    <Label text="Output Directory" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6">
+        <font>
+            <Font name="System Bold" size="14.0" />
+        </font>
+    </Label>
+    <VBox style="-fx-border-color: grey;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+        <padding>
+            <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+        </padding>
+        <GridPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+        </GridPane.margin>
+        <Label fx:id="outputFolderLabel" alignment="CENTER" prefWidth="160.0" text="No Directory Chosen">
+            <VBox.margin>
+                <Insets bottom="10.0" />
+            </VBox.margin>
+        </Label>
+        <Button fx:id="chooseOutputFolder" prefHeight="25.0" prefWidth="157.0" text="Select Folder" />
+    </VBox>
+
+    <Label text="Decryption Authorities" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+        <font>
+            <Font name="System Bold" size="14.0" />
+        </font>
+    </Label>
+    <VBox GridPane.columnIndex="5" GridPane.rowIndex="3" GridPane.rowSpan="6">
+        <GridPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+        </GridPane.margin>
+
+        <TableView fx:id="daTable" prefWidth="150" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0">
+            <columns>
+                <TableColumn fx:id="id" prefWidth="30" text="Id" />
+                <TableColumn fx:id="address" prefWidth="130.0" text="Address" />
+            </columns>
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+        </TableView>
+        <Button fx:id="addDA" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="166.0" text="Add Authority" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+    </VBox>
+
+
+    <Button fx:id="doBuild" defaultButton="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
         Generate Output
     </Button>
 
 
     <columnConstraints>
-        <ColumnConstraints percentWidth="10"/>
-        <ColumnConstraints percentWidth="40"/>
-        <ColumnConstraints percentWidth="20"/>
-        <ColumnConstraints percentWidth="25"/>
-        <ColumnConstraints percentWidth="5"/>
+        <ColumnConstraints percentWidth="2" />
+        <ColumnConstraints percentWidth="22" />
+        <ColumnConstraints percentWidth="2" />
+        <ColumnConstraints percentWidth="44" />
+        <ColumnConstraints percentWidth="2" />
+        <ColumnConstraints percentWidth="22" />
+        <ColumnConstraints percentWidth="2" />
     </columnConstraints>
 
     <rowConstraints>
-        <RowConstraints percentHeight="5"/>
-        <RowConstraints percentHeight="10"/>
-        <RowConstraints percentHeight="5"/>
-        <RowConstraints percentHeight="30"/>
-        <RowConstraints percentHeight="20"/>
-        <RowConstraints percentHeight="15"/>
-        <RowConstraints percentHeight="10"/>
-        <RowConstraints percentHeight="5"/>
+        <RowConstraints percentHeight="5" />
+        <RowConstraints percentHeight="5" />
+        <RowConstraints percentHeight="5" />
+        <RowConstraints percentHeight="25" />
+        <RowConstraints percentHeight="5" />
+        <RowConstraints percentHeight="25" />
+        <RowConstraints percentHeight="5" />
+        <RowConstraints percentHeight="15" />
+        <RowConstraints percentHeight="5" />
+        <RowConstraints percentHeight="5" />
+        <RowConstraints percentHeight="5" />
     </rowConstraints>
 
 
