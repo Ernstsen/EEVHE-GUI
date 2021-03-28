@@ -3,6 +3,7 @@ package dk.mmj.eevhe.gui.configurer;
 import dk.mmj.eevhe.gui.Manager;
 import dk.mmj.eevhe.gui.wrappers.BuildFailedException;
 import dk.mmj.eevhe.gui.wrappers.ConfigurationBuilder;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.SortedList;
@@ -105,6 +106,7 @@ public class ConfigurerManager implements Manager {
                 dialogue.initModality(Modality.APPLICATION_MODAL);
                 dialogue.initOwner(parentStage);
                 dialogue.setScene(new Scene(addDAParent));
+                dialogue.centerOnScreen();
                 dialogue.showAndWait();
                 daTable.refresh();
 
@@ -135,21 +137,36 @@ public class ConfigurerManager implements Manager {
     }
 
     private void doBuild(ActionEvent event) {
-        try {
-            configurationBuilder.setDaAddresses(daAddresses.stream().collect(Collectors.toMap(DAInfo::getId, DAInfo::getAddress)));
-            configurationBuilder.setElectionDuration(new ConfigurationBuilder.Duration(
-                    Integer.parseInt(days.getText()),
-                    Integer.parseInt(hours.getText()),
-                    Integer.parseInt(minutes.getText())
-            ));
-            configurationBuilder.build();
-        } catch (BuildFailedException | NumberFormatException e) {
-            final Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Configuration Error");
-            alert.setHeaderText("Failed to produce configuration output");
-            alert.setContentText(e.getMessage());
-            alert.show();
-        }
+        final Alert waitAlert = new Alert(Alert.AlertType.INFORMATION);
+        waitAlert.setTitle("Operation in progress");
+        waitAlert.setContentText("Computing configuration files");
+        waitAlert.setHeaderText("Please wait... ");
+        ProgressIndicator progress = new ProgressIndicator();
+        waitAlert.setGraphic(progress);
+        waitAlert.getDialogPane().lookupButton(ButtonType.OK).setVisible(false);
+        waitAlert.show();
+
+        new Thread(() -> {
+            try {
+                configurationBuilder.setDaAddresses(daAddresses.stream().collect(Collectors.toMap(DAInfo::getId, DAInfo::getAddress)));
+                configurationBuilder.setElectionDuration(new ConfigurationBuilder.Duration(
+                        Integer.parseInt(days.getText()),
+                        Integer.parseInt(hours.getText()),
+                        Integer.parseInt(minutes.getText())
+                ));
+                configurationBuilder.build();
+            } catch (BuildFailedException | NumberFormatException e) {
+                Platform.runLater(() -> {
+                    final Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Configuration Error");
+                    alert.setHeaderText("Failed to produce configuration output");
+                    alert.setContentText(e.getMessage());
+                    alert.showAndWait();
+                });
+            } finally {
+                Platform.runLater(waitAlert::close);
+            }
+        }).start();
     }
 
     @Override
