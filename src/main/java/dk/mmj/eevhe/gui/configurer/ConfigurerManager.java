@@ -1,6 +1,5 @@
 package dk.mmj.eevhe.gui.configurer;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dk.mmj.eevhe.entities.Candidate;
 import dk.mmj.eevhe.gui.Manager;
 import dk.mmj.eevhe.gui.wrappers.BuildFailedException;
@@ -22,7 +21,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Objects;
