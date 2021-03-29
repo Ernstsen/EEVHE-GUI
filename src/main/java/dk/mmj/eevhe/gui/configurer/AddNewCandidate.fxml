@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<GridPane prefHeight="100.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/11.0.1"
+          xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="dk.mmj.eevhe.gui.configurer.AddNewCandidateController">
+
+
+    <Text text="Add Candidate" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="4"
+          GridPane.halignment="CENTER" GridPane.rowIndex="1">
+        <font>
+            <Font name="System Bold" size="18.0"/>
+        </font>
+    </Text>
+
+    <Label text="idx" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+    <Label fx:id="idxLabel" text="-1" GridPane.columnIndex="3" GridPane.rowIndex="3" GridPane.columnSpan="2"/>
+
+    <Label text="Name" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+    <TextField fx:id="nameInput" promptText="John doe" GridPane.columnIndex="3"
+               GridPane.rowIndex="4" GridPane.columnSpan="2"/>
+
+    <Label text="Description" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+    <TextField fx:id="description" promptText="Party Affiliation, website etc." GridPane.columnIndex="3"
+               GridPane.rowIndex="5" GridPane.columnSpan="2"/>
+
+    <Button fx:id="cancel" alignment="CENTER_RIGHT" cancelButton="true" GridPane.columnIndex="1"
+            GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+        Cancel
+    </Button>
+    <Button fx:id="add" alignment="CENTER_RIGHT" defaultButton="true" GridPane.columnIndex="4"
+            GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+        Add
+    </Button>
+
+
+    <columnConstraints>
+        <ColumnConstraints percentWidth="5"/>
+        <ColumnConstraints percentWidth="25"/>
+        <ColumnConstraints percentWidth="5"/>
+        <ColumnConstraints percentWidth="45"/>
+        <ColumnConstraints percentWidth="15"/>
+        <ColumnConstraints percentWidth="5"/>
+    </columnConstraints>
+
+    <rowConstraints>
+        <RowConstraints percentHeight="10"/>
+        <RowConstraints percentHeight="10"/>
+        <RowConstraints percentHeight="15"/>
+        <RowConstraints percentHeight="10"/>
+        <RowConstraints percentHeight="15"/>
+        <RowConstraints percentHeight="10"/>
+        <RowConstraints percentHeight="10"/>
+        <RowConstraints percentHeight="10"/>
+        <RowConstraints percentHeight="10"/>
+    </rowConstraints>
+
+
+</GridPane>

@@ -1,5 +1,7 @@
 package dk.mmj.eevhe.gui.configurer;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import dk.mmj.eevhe.entities.Candidate;
 import dk.mmj.eevhe.gui.Manager;
 import dk.mmj.eevhe.gui.wrappers.BuildFailedException;
 import dk.mmj.eevhe.gui.wrappers.ConfigurationBuilder;
@@ -20,13 +22,16 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ConfigurerManager implements Manager {
 
     private final ObservableList<DAInfo> daAddresses = FXCollections.observableArrayList();
+    private final ObservableList<Candidate> candidates = FXCollections.observableArrayList();
 
     @FXML
     public Button doBuild;
@@ -56,6 +61,16 @@ public class ConfigurerManager implements Manager {
     public Label outputFolderLabel;
     @FXML
     public Button chooseOutputFolder;
+    @FXML
+    public TableView<Candidate> candidateTable;
+    @FXML
+    public TableColumn<Integer, Integer> candidateIdx;
+    @FXML
+    public TableColumn<Integer, String> candidateName;
+    @FXML
+    public TableColumn<Integer, String> candidateDescription;
+    @FXML
+    public Button addCandidate;
 
     private Stage parentStage;
     private ConfigurationBuilder configurationBuilder;
@@ -64,7 +79,7 @@ public class ConfigurerManager implements Manager {
     public void initialize() {
         configurationBuilder = new ConfigurationBuilder();
         chooseCertFile.setOnAction(event -> {
-            final File certFile = getChooser("Choose certificate file").showOpenDialog(parentStage);
+            final File certFile = getFileChooser("Choose certificate file").showOpenDialog(parentStage);
             if (certFile != null) {
                 configurationBuilder.setCertFilePath(certFile.getPath());
                 certFileLabel.setText(certFile.getName());
@@ -72,7 +87,7 @@ public class ConfigurerManager implements Manager {
         });
 
         chooseCertKeyFile.setOnAction(event -> {
-            final File certKeyFile = getChooser("Choose certificate private-key file").showOpenDialog(parentStage);
+            final File certKeyFile = getFileChooser("Choose certificate private-key file").showOpenDialog(parentStage);
             if (certKeyFile != null) {
                 configurationBuilder.setCertKeyFilePath(certKeyFile.getPath());
                 certKeyFileLabel.setText(certKeyFile.getName());
@@ -96,26 +111,35 @@ public class ConfigurerManager implements Manager {
                 final Parent addDAParent = loader.load();
                 final AddNewDecryptionAuthorityController controller = loader.getController();
                 final Stage dialogue = new Stage();
-
                 controller.onSave(inf -> {
                     daAddresses.add(inf);
                     dialogue.close();
                 });
                 controller.onCancel(dialogue::close);
 
-                dialogue.initModality(Modality.APPLICATION_MODAL);
-                dialogue.initOwner(parentStage);
-                dialogue.setScene(new Scene(addDAParent));
-                dialogue.centerOnScreen();
-                dialogue.showAndWait();
-                daTable.refresh();
-
+                showDialogueAndWait(addDAParent, dialogue, daTable);
             } catch (IOException e) {
-                final Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Unexpected Error");
-                alert.setHeaderText("Failed to open 'Add DA' dialogue");
-                alert.setContentText(e.getMessage());
-                alert.show();
+                handleUnexpectedException(e, "Failed to open 'Add DA' dialogue");
+            }
+        });
+
+        addCandidate.setOnAction(event -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("AddNewCandidate.fxml"));
+                final Parent addCandidateParent = loader.load();
+                final AddNewCandidateController controller = loader.getController();
+                final Stage dialogue = new Stage();
+                controller.onSave(candidate -> {
+                    candidates.add(candidate);
+                    dialogue.close();
+                });
+                controller.onCancel(dialogue::close);
+
+                controller.setIdx(candidates.stream().mapToInt(Candidate::getIdx).max().orElse(-1) + 1);
+
+                showDialogueAndWait(addCandidateParent, dialogue, candidateTable);
+            } catch (IOException e) {
+                handleUnexpectedException(e, "Failed to open 'Add Candidate' dialogue");
             }
         });
 
@@ -126,10 +150,55 @@ public class ConfigurerManager implements Manager {
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         address.setCellValueFactory(new PropertyValueFactory<>("address"));
 
+        final SortedList<Candidate> sortedCandidates = new SortedList<>(candidates);
+        sortedCandidates.comparatorProperty().bind(candidateTable.comparatorProperty());
+        candidateTable.setItems(sortedCandidates);
+
+        for (Field declaredField : Candidate.class.getDeclaredFields()) {
+            declaredField.setAccessible(true);
+        }
+        candidateIdx.setCellValueFactory(new PropertyValueFactory<>("idx"));
+        candidateName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        candidateDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+
         doBuild.setOnAction(this::doBuild);
     }
 
-    private FileChooser getChooser(String title) {
+    /**
+     * Handles an unexpected exception
+     *
+     * @param exception  exception to be handled
+     * @param headerText text written in header
+     */
+    private void handleUnexpectedException(IOException exception, String headerText) {
+        final Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Unexpected Error");
+        alert.setHeaderText(headerText);
+        alert.setContentText(exception.getMessage());
+        alert.show();
+    }
+
+    /**
+     * Displays a dialogue with input to table, waits for finish and refreshes table
+     *
+     * @param parent   parent for scene (highest order node to be displayed)
+     * @param dialogue stage containing the dialogue
+     * @param table    table to be refreshed
+     */
+    private void showDialogueAndWait(Parent parent, Stage dialogue, TableView<?> table) {
+        dialogue.initModality(Modality.APPLICATION_MODAL);
+        dialogue.initOwner(parentStage);
+        dialogue.setScene(new Scene(parent));
+        dialogue.centerOnScreen();
+        dialogue.showAndWait();
+        table.refresh();
+    }
+
+    /**
+     * @param title title for the fileChooser
+     * @return a fileChooser for .pem files
+     */
+    private FileChooser getFileChooser(String title) {
         final FileChooser chooser = new FileChooser();
         chooser.setTitle(title);
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("certificates", "*.pem"));
@@ -154,6 +223,7 @@ public class ConfigurerManager implements Manager {
                         Integer.parseInt(hours.getText()),
                         Integer.parseInt(minutes.getText())
                 ));
+                configurationBuilder.setCandidates(candidates);
                 configurationBuilder.build();
             } catch (BuildFailedException | NumberFormatException e) {
                 Platform.runLater(() -> {
