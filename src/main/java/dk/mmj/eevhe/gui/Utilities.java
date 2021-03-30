@@ -78,7 +78,7 @@ public class Utilities {
      * @param exception  exception to be handled
      * @param headerText text written in header
      */
-    public static void handleUnexpectedException(IOException exception, String headerText) {
+    public static void handleUnexpectedException(Exception exception, String headerText) {
         final Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Unexpected Error");
         alert.setHeaderText(headerText);

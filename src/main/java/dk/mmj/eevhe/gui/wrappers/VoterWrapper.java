@@ -28,6 +28,13 @@ public class VoterWrapper {
         if (!voter.checkBulletinBoard()) {
             throw new VoteFailedException("Target URL was not bulletinBoard");
         }
+
+        try {
+            voter.vote(vote);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new VoteFailedException("Failed to cast vote", e);
+        }
     }
 
     /**

@@ -26,7 +26,7 @@
         </columns>
     </TableView>
 
-    <Button defaultButton="true" prefHeight="25.0" prefWidth="97.0" text="Vote" GridPane.columnIndex="3"
+    <Button fx:id="voteButton" defaultButton="true" prefHeight="25.0" prefWidth="97.0" text="Vote" GridPane.columnIndex="3"
             GridPane.rowIndex="3">
         <GridPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
