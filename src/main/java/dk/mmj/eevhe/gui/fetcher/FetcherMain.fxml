@@ -1,44 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<GridPane prefHeight="150.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1"
+          xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.mmj.eevhe.gui.fetcher.FetcherManager">
 
-<GridPane prefHeight="150.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.mmj.eevhe.gui.fetcher.FetcherManager">
-
-    <Text text="Vote in an Election" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+    <Text text="Vote in an Election" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER"
+          GridPane.rowIndex="1">
         <font>
-            <Font size="22.0" />
+            <Font size="22.0"/>
         </font>
     </Text>
 
     <TableView fx:id="candidateTable" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2">
         <GridPane.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
         </GridPane.margin>
         <columns>
-            <TableColumn fx:id="candidateIdx" prefWidth="45" text="Idx" />
-            <TableColumn fx:id="candidateName" prefWidth="100.0" text="Name" />
-            <TableColumn fx:id="candidateDescription" prefWidth="230.0" text="Description" />
-            <TableColumn fx:id="candidateVotesInt" minWidth="80.0" prefWidth="0.0" text="Votes" />
-            <TableColumn fx:id="candidateVotesPercentage" prefWidth="70.0" text="Votes %" />
+            <TableColumn fx:id="candidateIdx" prefWidth="45" text="Idx"/>
+            <TableColumn fx:id="candidateName" prefWidth="100.0" text="Name"/>
+            <TableColumn fx:id="candidateDescription" prefWidth="230.0" text="Description"/>
+            <TableColumn fx:id="candidateVotesInt" minWidth="80.0" prefWidth="0.0" text="Votes"/>
+            <TableColumn fx:id="candidateVotesPercentage" prefWidth="70.0" text="Votes %"/>
         </columns>
     </TableView>
 
     <columnConstraints>
-        <ColumnConstraints percentWidth="5" />
-        <ColumnConstraints percentWidth="20" />
-        <ColumnConstraints percentWidth="50" />
-        <ColumnConstraints percentWidth="20" />
-        <ColumnConstraints percentWidth="5" />
+        <ColumnConstraints percentWidth="5"/>
+        <ColumnConstraints percentWidth="20"/>
+        <ColumnConstraints percentWidth="50"/>
+        <ColumnConstraints percentWidth="20"/>
+        <ColumnConstraints percentWidth="5"/>
     </columnConstraints>
 
     <rowConstraints>
-        <RowConstraints percentHeight="5" />
-        <RowConstraints percentHeight="10" />
-        <RowConstraints percentHeight="80" />
-        <RowConstraints percentHeight="5" />
+        <RowConstraints percentHeight="5"/>
+        <RowConstraints percentHeight="10"/>
+        <RowConstraints percentHeight="80"/>
+        <RowConstraints percentHeight="5"/>
     </rowConstraints>
 
 
