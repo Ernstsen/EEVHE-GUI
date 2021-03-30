@@ -1,31 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <GridPane prefHeight="150.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/11.0.1"
           xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.mmj.eevhe.gui.voter.VoterManager">
 
-    <Text text="Vote in an Election" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1">
+    <Text text="Vote in an Election" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER"
+          GridPane.rowIndex="1">
         <font>
             <Font size="22.0"/>
         </font>
     </Text>
 
+    <TableView fx:id="candidateTable" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2">
+        <GridPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+        </GridPane.margin>
+        <columns>
+            <TableColumn fx:id="candidateIdx" prefWidth="50" text="Idx"/>
+            <TableColumn fx:id="candidateName" prefWidth="107.0" text="Name"/>
+            <TableColumn fx:id="candidateDescription" prefWidth="237.0" text="Description"/>
+        </columns>
+    </TableView>
+
+    <Button defaultButton="true" prefHeight="25.0" prefWidth="97.0" text="Vote" GridPane.columnIndex="3"
+            GridPane.rowIndex="3">
+        <GridPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+        </GridPane.margin>
+    </Button>
+
     <columnConstraints>
+        <ColumnConstraints percentWidth="5"/>
         <ColumnConstraints percentWidth="20"/>
+        <ColumnConstraints percentWidth="50"/>
         <ColumnConstraints percentWidth="20"/>
-        <ColumnConstraints percentWidth="20"/>
-        <ColumnConstraints percentWidth="20"/>
-        <ColumnConstraints percentWidth="20"/>
+        <ColumnConstraints percentWidth="5"/>
     </columnConstraints>
 
     <rowConstraints>
-        <RowConstraints percentHeight="20"/>
-        <RowConstraints percentHeight="20"/>
-        <RowConstraints percentHeight="20"/>
-        <RowConstraints percentHeight="30"/>
+        <RowConstraints percentHeight="5"/>
         <RowConstraints percentHeight="10"/>
+        <RowConstraints percentHeight="70"/>
+        <RowConstraints percentHeight="10"/>
+        <RowConstraints percentHeight="5"/>
     </rowConstraints>
 
 

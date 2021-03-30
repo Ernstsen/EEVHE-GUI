@@ -17,14 +17,15 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static dk.mmj.eevhe.gui.Utilities.populateCandidateTable;
+import static dk.mmj.eevhe.gui.Utilities.showDialogueAndWait;
 
 public class ConfigurerManager implements Manager {
 
@@ -115,7 +116,8 @@ public class ConfigurerManager implements Manager {
                 });
                 controller.onCancel(dialogue::close);
 
-                showDialogueAndWait(addDAParent, dialogue, daTable);
+                showDialogueAndWait(parentStage, addDAParent, dialogue);
+                daTable.refresh();
             } catch (IOException e) {
                 handleUnexpectedException(e, "Failed to open 'Add DA' dialogue");
             }
@@ -135,7 +137,8 @@ public class ConfigurerManager implements Manager {
 
                 controller.setIdx(candidates.stream().mapToInt(Candidate::getIdx).max().orElse(-1) + 1);
 
-                showDialogueAndWait(addCandidateParent, dialogue, candidateTable);
+                showDialogueAndWait(parentStage, addCandidateParent, dialogue);
+                candidateTable.refresh();
             } catch (IOException e) {
                 handleUnexpectedException(e, "Failed to open 'Add Candidate' dialogue");
             }
@@ -148,16 +151,10 @@ public class ConfigurerManager implements Manager {
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         address.setCellValueFactory(new PropertyValueFactory<>("address"));
 
-        final SortedList<Candidate> sortedCandidates = new SortedList<>(candidates);
-        sortedCandidates.comparatorProperty().bind(candidateTable.comparatorProperty());
-        candidateTable.setItems(sortedCandidates);
-
-        for (Field declaredField : Candidate.class.getDeclaredFields()) {
-            declaredField.setAccessible(true);
-        }
-        candidateIdx.setCellValueFactory(new PropertyValueFactory<>("idx"));
-        candidateName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        candidateDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        populateCandidateTable(
+                candidateTable, candidates, candidateIdx,
+                candidateName, candidateDescription
+        );
 
         doBuild.setOnAction(this::doBuild);
     }
@@ -174,22 +171,6 @@ public class ConfigurerManager implements Manager {
         alert.setHeaderText(headerText);
         alert.setContentText(exception.getMessage());
         alert.show();
-    }
-
-    /**
-     * Displays a dialogue with input to table, waits for finish and refreshes table
-     *
-     * @param parent   parent for scene (highest order node to be displayed)
-     * @param dialogue stage containing the dialogue
-     * @param table    table to be refreshed
-     */
-    private void showDialogueAndWait(Parent parent, Stage dialogue, TableView<?> table) {
-        dialogue.initModality(Modality.APPLICATION_MODAL);
-        dialogue.initOwner(parentStage);
-        dialogue.setScene(new Scene(parent));
-        dialogue.centerOnScreen();
-        dialogue.showAndWait();
-        table.refresh();
     }
 
     /**

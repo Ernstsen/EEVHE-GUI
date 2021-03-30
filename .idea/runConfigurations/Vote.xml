@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Vote" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="dk.mmj.eevhe.gui.Main" />
+    <module name="eevhe-gui" />
+    <option name="PROGRAM_PARAMETERS" value="--action=vote" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
