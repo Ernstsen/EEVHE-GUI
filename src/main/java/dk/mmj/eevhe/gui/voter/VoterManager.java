@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import static dk.mmj.eevhe.gui.Utilities.handleUnexpectedException;
 import static dk.mmj.eevhe.gui.Utilities.showDialogueAndWait;
 
 public class VoterManager implements Manager {
@@ -68,6 +69,12 @@ public class VoterManager implements Manager {
         voteButton.setOnAction(event -> {
             final TableView.TableViewSelectionModel<Candidate> selectionModel = candidateTable.getSelectionModel();
             final Candidate chosenCandidate = selectionModel.getSelectedItem();
+
+            if (chosenCandidate == null) {
+                handleUnexpectedException("Please select a candidate", "No candidate selected");
+                event.consume();
+                return;
+            }
 
             final Alert alert = new Alert(Alert.AlertType.INFORMATION,
                     "Are you sure you want to cast your vote for " + chosenCandidate.getName(),
