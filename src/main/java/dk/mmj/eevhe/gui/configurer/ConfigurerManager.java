@@ -24,8 +24,7 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static dk.mmj.eevhe.gui.Utilities.populateCandidateTable;
-import static dk.mmj.eevhe.gui.Utilities.showDialogueAndWait;
+import static dk.mmj.eevhe.gui.Utilities.*;
 
 public class ConfigurerManager implements Manager {
 
@@ -157,20 +156,6 @@ public class ConfigurerManager implements Manager {
         );
 
         doBuild.setOnAction(this::doBuild);
-    }
-
-    /**
-     * Handles an unexpected exception
-     *
-     * @param exception  exception to be handled
-     * @param headerText text written in header
-     */
-    private void handleUnexpectedException(IOException exception, String headerText) {
-        final Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Unexpected Error");
-        alert.setHeaderText(headerText);
-        alert.setContentText(exception.getMessage());
-        alert.show();
     }
 
     /**

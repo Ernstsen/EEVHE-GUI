@@ -66,9 +66,11 @@ public class VoterManager implements Manager {
 
     @Override
     public void manage(Stage parentStage) {
-        this.parentStage = parentStage;
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("VoterMain.fxml"));
+            final FXMLLoader loader = new FXMLLoader(getClass().getResource("VoterMain.fxml"));
+            Parent root = loader.load();
+            final VoterManager controller = loader.getController();
+            controller.parentStage = parentStage;
             parentStage.setScene(new Scene(root));
             parentStage.centerOnScreen();
             parentStage.show();

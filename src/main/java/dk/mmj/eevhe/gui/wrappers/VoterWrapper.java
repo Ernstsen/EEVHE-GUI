@@ -19,19 +19,6 @@ public class VoterWrapper {
     }
 
     /**
-     * @param address address in question
-     * @return whether address points to a BulletinBoard
-     */
-    public static boolean isBulletinBoard(String address) {
-        try {
-            return new Voter(address, "").checkBulletinBoard();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    /**
      * Casts a vote
      *
      * @param vote idx of candidate to vote for
