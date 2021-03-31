@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<GridPane prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1"
+          xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.mmj.eevhe.gui.configurer.CSVImportController">
+
+
+    <Text text="CSV Import" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="5"
+          GridPane.halignment="CENTER" GridPane.rowIndex="1">
+        <font>
+            <Font name="System Bold" size="18.0"/>
+        </font>
+    </Text>
+
+    <TextArea fx:id="csv" promptText="1;address1" GridPane.columnIndex="1" GridPane.columnSpan="5"
+              GridPane.rowIndex="2" GridPane.rowSpan="5">
+        <GridPane.margin>
+            <Insets bottom="10.0" top="10.0"/>
+        </GridPane.margin>
+    </TextArea>
+
+    <Button fx:id="cancel" alignment="CENTER" cancelButton="true" prefHeight="25.0" prefWidth="63.0"
+            GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+        Cancel
+    </Button>
+    <Button fx:id="importFile" alignment="CENTER" prefHeight="25.0" prefWidth="63.0" GridPane.columnIndex="3"
+            GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+        Import File
+    </Button>
+    <Button fx:id="add" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" prefHeight="25.0"
+            prefWidth="79.0" text="Add" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="7"
+            GridPane.valignment="CENTER">
+        Add
+    </Button>
+
+
+    <columnConstraints>
+        <ColumnConstraints percentWidth="5"/>
+        <ColumnConstraints percentWidth="25"/>
+        <ColumnConstraints percentWidth="5"/>
+        <ColumnConstraints percentWidth="25"/>
+        <ColumnConstraints percentWidth="5"/>
+        <ColumnConstraints percentWidth="30"/>
+        <ColumnConstraints percentWidth="5"/>
+    </columnConstraints>
+
+    <rowConstraints>
+        <RowConstraints percentHeight="10"/>
+        <RowConstraints percentHeight="10"/>
+        <RowConstraints percentHeight="15"/>
+        <RowConstraints percentHeight="10"/>
+        <RowConstraints percentHeight="15"/>
+        <RowConstraints percentHeight="10"/>
+        <RowConstraints percentHeight="10"/>
+        <RowConstraints percentHeight="10"/>
+        <RowConstraints percentHeight="10"/>
+    </rowConstraints>
+
+
+</GridPane>

@@ -16,7 +16,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -69,6 +68,8 @@ public class ConfigurerManager implements Manager {
     public TableColumn<Integer, String> candidateDescription;
     @FXML
     public Button addCandidate;
+    @FXML
+    public Button importDA;
 
     private Stage parentStage;
     private ConfigurationBuilder configurationBuilder;
@@ -143,6 +144,25 @@ public class ConfigurerManager implements Manager {
             }
         });
 
+        importDA.setOnAction(event -> {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CSVImport.fxml"));
+            try {
+                final Parent addDAParent = loader.load();
+                final CSVImportController controller = loader.getController();
+                final Stage dialogue = new Stage();
+                controller.onSave(infs -> {
+                    daAddresses.addAll(infs);
+                    dialogue.close();
+                });
+                controller.onCancel(dialogue::close);
+
+                showDialogueAndWait(parentStage, addDAParent, dialogue);
+                daTable.refresh();
+            } catch (IOException e) {
+                handleUnexpectedException(e, "Failed to open 'Add DA' dialogue");
+            }
+        });
+
         SortedList<DAInfo> sortedInfos = new SortedList<>(daAddresses);
         sortedInfos.comparatorProperty().bind(daTable.comparatorProperty());
         daTable.setItems(sortedInfos);
@@ -156,17 +176,6 @@ public class ConfigurerManager implements Manager {
         );
 
         doBuild.setOnAction(this::doBuild);
-    }
-
-    /**
-     * @param title title for the fileChooser
-     * @return a fileChooser for .pem files
-     */
-    private FileChooser getFileChooser(String title) {
-        final FileChooser chooser = new FileChooser();
-        chooser.setTitle(title);
-        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("certificates", "*.pem"));
-        return chooser;
     }
 
     private void doBuild(ActionEvent event) {

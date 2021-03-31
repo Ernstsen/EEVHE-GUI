@@ -10,10 +10,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 
 public class Utilities {
@@ -99,4 +99,27 @@ public class Utilities {
         alert.setContentText(error);
         alert.show();
     }
+
+    /**
+     * @param title title for the fileChooser
+     * @return a fileChooser for .pem files
+     */
+    public static FileChooser getFileChooser(String title) {
+        return getFileChooser(title, new FileChooser.ExtensionFilter("certificates", "*.pem"));
+    }
+
+    /**
+     * Creates fileChooser
+     *
+     * @param title  title of fileChooser dialogue
+     * @param filter filter deciding type of return type
+     * @return a fileChooser for files matching the extensionFilter
+     */
+    public static FileChooser getFileChooser(String title, FileChooser.ExtensionFilter filter) {
+        final FileChooser chooser = new FileChooser();
+        chooser.setTitle(title);
+        chooser.getExtensionFilters().add(filter);
+        return chooser;
+    }
+
 }
