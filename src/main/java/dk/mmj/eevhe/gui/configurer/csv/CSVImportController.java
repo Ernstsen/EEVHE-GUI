@@ -1,6 +1,7 @@
-package dk.mmj.eevhe.gui.configurer;
+package dk.mmj.eevhe.gui.configurer.csv;
 
 import dk.mmj.eevhe.gui.Utilities;
+import dk.mmj.eevhe.gui.configurer.csv.CSVConfig;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-public class CSVImportController {
+public class CSVImportController<T> {
 
 
     @FXML
@@ -27,7 +28,9 @@ public class CSVImportController {
     @FXML
     public TextArea csv;
 
-    private Consumer<List<ConfigurerManager.DAInfo>> callback;
+    private Consumer<List<T>> callback;
+    private CSVConfig<T> config;
+
     private Runnable onCancel;
 
     @FXML
@@ -43,10 +46,10 @@ public class CSVImportController {
                 return;
             }
 
-            final List<ConfigurerManager.DAInfo> daInfos = Arrays.stream(csvText.split("\n"))
+            final List<T> daInfos = Arrays.stream(csvText.split("\n"))
                     .map(s -> s.split(";"))
-                    .filter(arr -> arr.length == 2)
-                    .map(arr -> new ConfigurerManager.DAInfo(Integer.parseInt(arr[0]), arr[1]))
+                    .filter(config::isValid)
+                    .map(arr -> config.parse(arr))
                     .collect(Collectors.toList());
             callback.accept(daInfos);
         });
@@ -71,11 +74,12 @@ public class CSVImportController {
         cancel.setOnAction(event -> onCancel.run());
     }
 
-    void onSave(Consumer<List<ConfigurerManager.DAInfo>> callback) {
+    public void configure(Consumer<List<T>> callback, CSVConfig<T> csvConfig){
         this.callback = callback;
+        config = csvConfig;
     }
 
-    void onCancel(Runnable onCancel) {
+    public void onCancel(Runnable onCancel) {
         this.onCancel = onCancel;
     }
 }

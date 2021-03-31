@@ -2,6 +2,9 @@ package dk.mmj.eevhe.gui.configurer;
 
 import dk.mmj.eevhe.entities.Candidate;
 import dk.mmj.eevhe.gui.Manager;
+import dk.mmj.eevhe.gui.configurer.csv.CSVImportController;
+import dk.mmj.eevhe.gui.configurer.csv.CandidateCSVConfig;
+import dk.mmj.eevhe.gui.configurer.csv.DACSVConfig;
 import dk.mmj.eevhe.gui.wrappers.BuildFailedException;
 import dk.mmj.eevhe.gui.wrappers.ConfigurationBuilder;
 import javafx.application.Platform;
@@ -70,6 +73,8 @@ public class ConfigurerManager implements Manager {
     public Button addCandidate;
     @FXML
     public Button importDA;
+    @FXML
+    public Button importCandidates;
 
     private Stage parentStage;
     private ConfigurationBuilder configurationBuilder;
@@ -145,18 +150,43 @@ public class ConfigurerManager implements Manager {
         });
 
         importDA.setOnAction(event -> {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("CSVImport.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("csv/CSVImport.fxml"));
             try {
                 final Parent addDAParent = loader.load();
-                final CSVImportController controller = loader.getController();
+                final CSVImportController<DAInfo> controller = loader.getController();
                 final Stage dialogue = new Stage();
-                controller.onSave(infs -> {
-                    daAddresses.addAll(infs);
-                    dialogue.close();
-                });
+                controller.configure(
+                        daInfos -> {
+                            daAddresses.addAll(daInfos);
+                            dialogue.close();
+                        },
+                        new DACSVConfig()
+                );
                 controller.onCancel(dialogue::close);
 
                 showDialogueAndWait(parentStage, addDAParent, dialogue);
+                daTable.refresh();
+            } catch (IOException e) {
+                handleUnexpectedException(e, "Failed to open 'Add DA' dialogue");
+            }
+        });
+
+        importCandidates.setOnAction(event -> {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("csv/CSVImport.fxml"));
+            try {
+                final Parent csvParent = loader.load();
+                final CSVImportController<Candidate> controller = loader.getController();
+                final Stage dialogue = new Stage();
+                controller.configure(
+                        candidateList -> {
+                            candidates.addAll(candidateList);
+                            dialogue.close();
+                        },
+                        new CandidateCSVConfig()
+                );
+                controller.onCancel(dialogue::close);
+
+                showDialogueAndWait(parentStage, csvParent, dialogue);
                 daTable.refresh();
             } catch (IOException e) {
                 handleUnexpectedException(e, "Failed to open 'Add DA' dialogue");
