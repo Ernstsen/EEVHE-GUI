@@ -110,7 +110,7 @@ public class ConfigurerManager implements Manager {
         });
 
         addDA.setOnAction(event -> {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("AddNewDecryptionAuthority.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/layout/configurer/AddNewDecryptionAuthority.fxml"));
             try {
                 final Parent addDAParent = loader.load();
                 final AddNewDecryptionAuthorityController controller = loader.getController();
@@ -130,7 +130,7 @@ public class ConfigurerManager implements Manager {
 
         addCandidate.setOnAction(event -> {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("AddNewCandidate.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/layout/configurer/AddNewCandidate.fxml"));
                 final Parent addCandidateParent = loader.load();
                 final AddNewCandidateController controller = loader.getController();
                 final Stage dialogue = new Stage();
@@ -150,7 +150,7 @@ public class ConfigurerManager implements Manager {
         });
 
         importDA.setOnAction(event -> {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("csv/CSVImport.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/layout/configurer/csv/CSVImport.fxml"));
             try {
                 final Parent addDAParent = loader.load();
                 final CSVImportController<DAInfo> controller = loader.getController();
@@ -172,7 +172,7 @@ public class ConfigurerManager implements Manager {
         });
 
         importCandidates.setOnAction(event -> {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("csv/CSVImport.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/layout/configurer/csv/CSVImport.fxml"));
             try {
                 final Parent csvParent = loader.load();
                 final CSVImportController<Candidate> controller = loader.getController();
@@ -247,7 +247,7 @@ public class ConfigurerManager implements Manager {
         this.parentStage = parentStage;
 
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("ConfigureMain.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/layout/configurer/ConfigureMain.fxml"));
             parentStage.setScene(new Scene(root));
             parentStage.centerOnScreen();
             parentStage.show();

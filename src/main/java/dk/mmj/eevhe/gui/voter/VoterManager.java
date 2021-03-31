@@ -39,7 +39,7 @@ public class VoterManager implements Manager {
 
     @FXML
     public void initialize() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("VoterInit.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/layout/voter/VoterInit.fxml"));
 
         try {
             final Parent voterInitParent = loader.load();
@@ -109,7 +109,7 @@ public class VoterManager implements Manager {
     @Override
     public void manage(Stage parentStage) {
         try {
-            final FXMLLoader loader = new FXMLLoader(getClass().getResource("VoterMain.fxml"));
+            final FXMLLoader loader = new FXMLLoader(getClass().getResource("/layout/voter/VoterMain.fxml"));
             Parent root = loader.load();
             final VoterManager controller = loader.getController();
             controller.parentStage = parentStage;

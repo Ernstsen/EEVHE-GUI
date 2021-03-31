@@ -44,7 +44,7 @@ public class FetcherManager implements Manager {
 
     @FXML
     public void initialize() {
-        FXMLLoader loader = new FXMLLoader(VoterInitController.class.getResource("VoterInit.fxml"));
+        FXMLLoader loader = new FXMLLoader(VoterInitController.class.getResource("/layout/voter/VoterInit.fxml"));
 
         try {
             final Parent voterInitParent = loader.load();
@@ -112,7 +112,7 @@ public class FetcherManager implements Manager {
     @Override
     public void manage(Stage parentStage) {
         try {
-            final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FetcherMain.fxml"));
+            final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/layout/fetcher/FetcherMain.fxml"));
             Parent root = fxmlLoader.load();
             final FetcherManager controller = fxmlLoader.getController();
             controller.parentStage = parentStage;
