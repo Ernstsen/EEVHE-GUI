@@ -26,7 +26,10 @@ public class GUI extends Application {
         final Map<String, String> named = parameters.getNamed();
 
         if (named.containsKey("action")) {
-            action = Action.valueOf(named.get("action").toUpperCase());
+            try {
+                action = Action.valueOf(named.get("action").toUpperCase());
+            } catch (IllegalArgumentException ignored) {
+            }
         }
         INSTANCE = this;
     }
