@@ -19,6 +19,7 @@ public class ConfigurationBuilder {
     private String certKeyFilePath;
     private Duration electionDuration = null;
     private Map<Integer, String> daAddresses;
+    private Map<Integer, String> bbPeerAddresses;
     private List<Candidate> candidates;
 
     /**
@@ -58,6 +59,13 @@ public class ConfigurationBuilder {
     }
 
     /**
+     * @param bbPeerAddresses map between ids and addresses for bulletinBoard peers
+     */
+    public void setBbPeerAddresses(Map<Integer, String> bbPeerAddresses) {
+        this.bbPeerAddresses = bbPeerAddresses;
+    }
+
+    /**
      * Executes the SystemConfigurer
      */
     public void build() throws BuildFailedException {
@@ -69,9 +77,14 @@ public class ConfigurationBuilder {
                     (electionDuration == null ? "duration undefined" :
                             "No Decryption Authority addresses were specified"));
         }
+        if (bbPeerAddresses == null || bbPeerAddresses.isEmpty()) {
+            throw new BuildFailedException("Failed to create configuration: No Bulletin Board addresses were specified");
+        }
 
-        if (certFilePath == null || certKeyFilePath == null || outputFolder == null) {
-            throw new BuildFailedException("Must specify both certificate, certificate secret-key and output-folder");
+        if (certFilePath == null || certFilePath.trim().contains(" ") ||
+                certKeyFilePath == null || certKeyFilePath.trim().contains(" ") ||
+                outputFolder == null || outputFolder.trim().contains(" ")) {
+            throw new BuildFailedException("Must specify both certificate, certificate secret-key and output-folder. No path is allowed to contain whitespace");
         }
 
         if (candidates == null || candidates.isEmpty()) {
@@ -80,12 +93,15 @@ public class ConfigurationBuilder {
 
         final StringBuilder sb = new StringBuilder();
 
+        sb.append("--outputFolder=").append(outputFolder).append(" ");
         sb.append("--cert=").append(certFilePath).append(" ");
         sb.append("--certKey=").append(certKeyFilePath).append(" ");
         sb.append("--time ").append(electionDuration).append(" ");
         sb.append("--addresses ");
 
         daAddresses.forEach((id, address) -> sb.append("-").append(id).append("_").append(address).append(" "));
+        sb.append("--bb_peer_addresses ");
+        bbPeerAddresses.forEach((id, address) -> sb.append("-").append(id).append("_").append(address).append(" "));
 
         try {
             final SystemConfigurer.SystemConfiguration parse = parser.parse(sb.toString().split(" "));

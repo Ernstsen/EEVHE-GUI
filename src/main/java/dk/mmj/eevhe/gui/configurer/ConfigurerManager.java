@@ -4,7 +4,7 @@ import dk.mmj.eevhe.entities.Candidate;
 import dk.mmj.eevhe.gui.Manager;
 import dk.mmj.eevhe.gui.configurer.csv.CSVImportController;
 import dk.mmj.eevhe.gui.configurer.csv.CandidateCSVConfig;
-import dk.mmj.eevhe.gui.configurer.csv.DACSVConfig;
+import dk.mmj.eevhe.gui.configurer.csv.InstanceCSVConfig;
 import dk.mmj.eevhe.gui.wrappers.BuildFailedException;
 import dk.mmj.eevhe.gui.wrappers.ConfigurationBuilder;
 import javafx.application.Platform;
@@ -30,7 +30,7 @@ import static dk.mmj.eevhe.gui.Utilities.*;
 
 public class ConfigurerManager implements Manager {
 
-    private final ObservableList<DAInfo> daAddresses = FXCollections.observableArrayList();
+    private final ObservableList<InstanceInfo> instanceInfos = FXCollections.observableArrayList();
     private final ObservableList<Candidate> candidates = FXCollections.observableArrayList();
 
     @FXML
@@ -44,13 +44,15 @@ public class ConfigurerManager implements Manager {
     @FXML
     public Button chooseCertKeyFile;
     @FXML
-    public TableView<DAInfo> daTable;
+    public Button addInstance;
     @FXML
-    public Button addDA;
+    public TableView<InstanceInfo> daTable;
     @FXML
     public TableColumn<Integer, Integer> id;
     @FXML
     public TableColumn<Integer, String> address;
+    @FXML
+    public TableColumn<Integer, String> type;
     @FXML
     public TextField days;
     @FXML
@@ -109,14 +111,14 @@ public class ConfigurerManager implements Manager {
 
         });
 
-        addDA.setOnAction(event -> {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/layout/configurer/AddNewDecryptionAuthority.fxml"));
+        addInstance.setOnAction(event -> {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/layout/configurer/AddNewInstance.fxml"));
             try {
                 final Parent addDAParent = loader.load();
-                final AddNewDecryptionAuthorityController controller = loader.getController();
+                final AddNewInstanceController controller = loader.getController();
                 final Stage dialogue = new Stage();
                 controller.onSave(inf -> {
-                    daAddresses.add(inf);
+                    instanceInfos.add(inf);
                     dialogue.close();
                 });
                 controller.onCancel(dialogue::close);
@@ -153,14 +155,14 @@ public class ConfigurerManager implements Manager {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/layout/configurer/csv/CSVImport.fxml"));
             try {
                 final Parent addDAParent = loader.load();
-                final CSVImportController<DAInfo> controller = loader.getController();
+                final CSVImportController<InstanceInfo> controller = loader.getController();
                 final Stage dialogue = new Stage();
                 controller.configure(
                         daInfos -> {
-                            daAddresses.addAll(daInfos);
+                            instanceInfos.addAll(daInfos);
                             dialogue.close();
                         },
-                        new DACSVConfig()
+                        new InstanceCSVConfig()
                 );
                 controller.onCancel(dialogue::close);
 
@@ -189,16 +191,17 @@ public class ConfigurerManager implements Manager {
                 showDialogueAndWait(parentStage, csvParent, dialogue);
                 daTable.refresh();
             } catch (IOException e) {
-                handleUnexpectedException(e, "Failed to open 'Add DA' dialogue");
+                handleUnexpectedException(e, "Failed to open 'Add Instance' dialogue");
             }
         });
 
-        SortedList<DAInfo> sortedInfos = new SortedList<>(daAddresses);
+        SortedList<InstanceInfo> sortedInfos = new SortedList<>(instanceInfos);
         sortedInfos.comparatorProperty().bind(daTable.comparatorProperty());
         daTable.setItems(sortedInfos);
 
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         address.setCellValueFactory(new PropertyValueFactory<>("address"));
+        type.setCellValueFactory(new PropertyValueFactory<>("type"));
 
         populateCandidateTable(
                 candidateTable, candidates, candidateIdx,
@@ -220,7 +223,16 @@ public class ConfigurerManager implements Manager {
 
         new Thread(() -> {
             try {
-                configurationBuilder.setDaAddresses(daAddresses.stream().collect(Collectors.toMap(DAInfo::getId, DAInfo::getAddress)));
+                configurationBuilder.setDaAddresses(
+                        instanceInfos.stream()
+                                .filter(i -> InstanceType.DA.equals(i.getType()))
+                                .collect(Collectors.toMap(InstanceInfo::getId, InstanceInfo::getAddress))
+                );
+                configurationBuilder.setBbPeerAddresses(
+                        instanceInfos.stream()
+                                .filter(i -> InstanceType.BB.equals(i.getType()))
+                                .collect(Collectors.toMap(InstanceInfo::getId, InstanceInfo::getAddress))
+                );
                 configurationBuilder.setElectionDuration(new ConfigurationBuilder.Duration(
                         Integer.parseInt(days.getText()),
                         Integer.parseInt(hours.getText()),
@@ -256,13 +268,15 @@ public class ConfigurerManager implements Manager {
         }
     }
 
-    public static class DAInfo {
+    public static class InstanceInfo {
         public final int id;
         public final String address;
+        public final InstanceType type;
 
-        public DAInfo(int id, String address) {
+        public InstanceInfo(int id, String address, InstanceType type) {
             this.id = id;
             this.address = address;
+            this.type = type;
         }
 
         public int getId() {
@@ -273,18 +287,21 @@ public class ConfigurerManager implements Manager {
             return address;
         }
 
+        public InstanceType getType() {
+            return type;
+        }
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-            DAInfo daInfo = (DAInfo) o;
-            return id == daInfo.id &&
-                    Objects.equals(address, daInfo.address);
+            InstanceInfo that = (InstanceInfo) o;
+            return id == that.id && Objects.equals(address, that.address) && type == that.type;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(id, address);
+            return Objects.hash(id, address, type);
         }
     }
 }

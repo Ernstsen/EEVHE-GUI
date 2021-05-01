@@ -6,10 +6,10 @@
 <?import javafx.scene.text.Text?>
 <GridPane prefHeight="100.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/8.0.1"
           xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="dk.mmj.eevhe.gui.configurer.AddNewDecryptionAuthorityController">
+          fx:controller="dk.mmj.eevhe.gui.configurer.AddNewInstanceController">
 
 
-    <Text text="Add Decryption Authority" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="4"
+    <Text text="Add Instance" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="4"
           GridPane.halignment="CENTER" GridPane.rowIndex="1">
         <font>
             <Font name="System Bold" size="18.0"/>
@@ -17,20 +17,26 @@
     </Text>
 
     <Label text="id" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-    <TextField fx:id="idInput" promptText="Id" GridPane.columnIndex="3" GridPane.rowIndex="3" GridPane.columnSpan="2"/>
+    <TextField fx:id="idInput" promptText="Id" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="3"/>
 
     <Label text="Address" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
     <TextField fx:id="addressInput" promptText="https://Address.com:8080/" GridPane.columnIndex="3"
-               GridPane.rowIndex="5" GridPane.columnSpan="2"/>
+               GridPane.columnSpan="2" GridPane.rowIndex="5"/>
+
+    <Label text="Peer Type" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+    <ChoiceBox fx:id="typeChoice" prefHeight="25.0" prefWidth="153.0" GridPane.columnIndex="3" GridPane.columnSpan="2"
+               GridPane.rowIndex="7">
+
+    </ChoiceBox>
 
     <Button fx:id="cancel" alignment="CENTER_RIGHT" cancelButton="true" GridPane.columnIndex="1"
-            GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+            GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
         Cancel
     </Button>
 
 
     <Button fx:id="add" alignment="CENTER_RIGHT" defaultButton="true" GridPane.columnIndex="4"
-            GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+            GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
         Add
     </Button>
 
@@ -45,7 +51,9 @@
     </columnConstraints>
 
     <rowConstraints>
+        <RowConstraints percentHeight="5"/>
         <RowConstraints percentHeight="10"/>
+        <RowConstraints percentHeight="15"/>
         <RowConstraints percentHeight="10"/>
         <RowConstraints percentHeight="15"/>
         <RowConstraints percentHeight="10"/>
@@ -53,7 +61,7 @@
         <RowConstraints percentHeight="10"/>
         <RowConstraints percentHeight="10"/>
         <RowConstraints percentHeight="10"/>
-        <RowConstraints percentHeight="10"/>
+        <RowConstraints percentHeight="5"/>
     </rowConstraints>
 
 

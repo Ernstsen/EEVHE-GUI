@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<GridPane prefHeight="10.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.1"
+<GridPane prefHeight="10.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.1"
           xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.mmj.eevhe.gui.configurer.ConfigurerManager">
 
 
@@ -145,7 +145,7 @@
         </HBox>
     </VBox>
 
-    <Label text="Decryption Authorities" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+    <Label text="Peer Instances" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2">
         <font>
             <Font name="System Bold" size="14.0"/>
         </font>
@@ -158,6 +158,7 @@
         <TableView fx:id="daTable" prefWidth="150" GridPane.columnIndex="0" GridPane.halignment="CENTER"
                    GridPane.rowIndex="0">
             <columns>
+                <TableColumn fx:id="type" prefWidth="50" text="Type"/>
                 <TableColumn fx:id="id" prefWidth="30" text="Id"/>
                 <TableColumn fx:id="address" editable="false" prefWidth="130.0" text="Address"/>
             </columns>
@@ -165,8 +166,8 @@
                 <Insets bottom="10.0"/>
             </VBox.margin>
         </TableView>
-        <Button fx:id="addDA" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="166.0"
-                text="Add Authority" GridPane.halignment="CENTER" GridPane.rowIndex="0">
+        <Button fx:id="addInstance" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="166.0"
+                text="Add Instance" GridPane.halignment="CENTER" GridPane.rowIndex="0">
             <VBox.margin>
                 <Insets bottom="10.0"/>
             </VBox.margin>
