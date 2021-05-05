@@ -81,7 +81,7 @@ public class VoterManager implements Manager {
                     ButtonType.OK,
                     ButtonType.NO);
             alert.setHeaderText("Please verify");
-            alert.setTitle("Very your candidate");
+            alert.setTitle("Verify your candidate");
 
             ((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setOnAction(e -> {
                 boolean failed = false;
