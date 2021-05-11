@@ -30,7 +30,10 @@ public class VoterWrapper {
         }
 
         try {
-            voter.vote(vote);
+            boolean success = voter.vote(vote);
+            if(!success){
+                throw new VoteFailedException("The vote was cast, but not enough validations were received. Try again later");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             throw new VoteFailedException("Failed to cast vote", e);
