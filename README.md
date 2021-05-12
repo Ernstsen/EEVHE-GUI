@@ -1,4 +1,3 @@
-[![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/Ernstsen/EEVHE-GUI.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Ernstsen/EEVHE-GUI/context:java)
 ![GitHub](https://img.shields.io/github/license/Ernstsen/EEVHE-GUI)
 
 # EEVHE-GUI
